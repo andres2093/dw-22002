@@ -2,7 +2,14 @@ const { buildSchema } = require('graphql')
 
 const schema = buildSchema(`
   type Query {
-    saludo: String
+    saludo: String,
+    experto(id:ID!): Experto,
+    getAllExpertos: [Experto]
+  },
+  type Experto {
+    id: ID,
+    nombre: String,
+    apellido: String
   }
 `)
 
