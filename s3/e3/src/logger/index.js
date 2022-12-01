@@ -1,6 +1,7 @@
-const winston = require('winston')
+import winston from 'winston'
+import 'winston-daily-rotate-file'
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   level: 'info',
   // format: winston.format.json(),
   format: winston.format.combine(
@@ -11,8 +12,25 @@ const logger = winston.createLogger({
   ),
   defaultMeta: { service: 'user-service' },
   transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
+   //  new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+   //  new winston.transports.File({ filename: 'logs/combined.log' })
+   // Uso de transporte 'DailyRotateFile' con rotación por hora
+   new winston.transports.DailyRotateFile({
+      level: 'error',
+      filename: './logs/error-%DATE%.log',
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '30m',
+      maxFiles: '15d'
+   }),
+   // Uso de transporte 'DailyRotateFile' con rotación por minuto
+   new winston.transports.DailyRotateFile({
+      filename: './logs/combined-%DATE%.log',
+      datePattern: 'YYYY-MM-DD-HH-mm',
+      zippedArchive: true,
+      maxSize: '30m',
+      maxFiles: '15d'
+   }),
   ]
 })
 
@@ -21,5 +39,3 @@ if(process.env.NODE_ENV !== 'production'){
     format: winston.format.simple()
   }))
 }
-
-module.exports = { logger }
