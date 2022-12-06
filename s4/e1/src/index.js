@@ -4,12 +4,14 @@ const typeDefs = gql`
   #Definición de schema
   type Query {
     helloWorld: String
+    hello(nombre:String!): String
   }
 `
 
 const resolvers = {
   Query: {
-    helloWorld: () => 'Hola mundo!!!'
+    helloWorld: () => `Hola world!!!`,
+    hello: (_, { nombre }) => `Hola ${ nombre }`
   }
 }
 
