@@ -9,11 +9,19 @@ query {
   }
 }
 mutation {
-  insertBook(asin: "B0001244HBM", title: "title", author: "bedu1", pages: 160) {
-    asin, author, pages, title
-  },
-  updateBook(asin: "B0001244HBN", title: "NodeJS") {
-    asin, author, pages, title
+  signIn(email: "beto@bedu.org", password: "b3T0P4$$w0rD"),
+  signUp(
+    input: {
+      name: "Beto"
+      lastname: "Bedu"
+      email: "beto@bedu.org"
+      password: "b3T0P4$$w0rD"
+      isAdmin: true
+    }
+  ) {
+    id
+    name
+    email
   }
 }
 ```

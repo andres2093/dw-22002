@@ -1,7 +1,8 @@
 import { sequelize } from "./db"
 import { logger } from "./logger"
-import { ApolloError } from "apollo-server-errors"
-import { hash } from 'bcrypt'
+import { ApolloError, AuthenticationError } from "apollo-server-errors"
+import { compare, hash } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
 
 const SALT_ROUNDS = 10
 
@@ -41,6 +42,21 @@ export const resolvers = {
     signUp: async (_, { input: user }) => {
       user.password = await hash(user.password, SALT_ROUNDS)
       return await sequelize.models.User.create({ ...user })
+    },
+    signIn: async (_, { email, password }) => {
+      const user = await sequelize.models.User.findOne({ where: { email } })
+      if (user && await compare(password, user.password)){
+        const tokenData = {
+          fullName: user.name + ' ' + user.lastname,
+          email,
+          isAdmin: user.isAdmin
+        }
+        logger.info(`signIn: Usuario ${user.id} accedio`)
+        return sign(tokenData, process.env.JWT_SECRET, { expiresIn: 180 })
+      } else {
+        logger.error(`signIn: Credenciales invalidas para ${email}`)
+        throw new AuthenticationError('Invalid credentials')
+      }
     }
   }
 }
