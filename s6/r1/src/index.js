@@ -4,7 +4,15 @@ import { ApolloServer } from 'apollo-server'
 import { typeDefs } from './schema'
 import { resolvers } from './resolver'
 
-const server = new ApolloServer({ typeDefs, resolvers })
+const server = new ApolloServer({ 
+  typeDefs, 
+  resolvers,
+  context: async ({ req }) => {
+    return {
+      token: req.headers.authorization
+    }
+  }
+})
 
 server.listen().then(({ url }) => {
   console.log(url);

@@ -3,13 +3,15 @@ import { logger } from "./logger"
 import { ApolloError, AuthenticationError } from "apollo-server-errors"
 import { compare, hash } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
+import { verifyToken } from "./auth"
 
 const SALT_ROUNDS = 10
 
 export const resolvers = {
   Query: {
-    getAllBooks: async () => await sequelize.models.Book.findAll(),
-    getBook: async (_, { asin }) => {
+    getAllBooks: async (_, __, { token }) =>  verifyToken(token) && await sequelize.models.Book.findAll(),
+    getBook: async (_, { asin }, { token }) => {
+      verifyToken(token)
       return await sequelize.models.Book.findOne({
         where: { asin } // asin: asin
       })
