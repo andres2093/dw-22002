@@ -1,6 +1,9 @@
 import { sequelize } from "./db"
 import { logger } from "./logger"
 import { ApolloError } from "apollo-server-errors"
+import { hash } from 'bcrypt'
+
+const SALT_ROUNDS = 10
 
 export const resolvers = {
   Query: {
@@ -34,6 +37,10 @@ export const resolvers = {
       // Actualizamos el libro
       bookFound.save()
       return bookFound;
-  },
+    },
+    signUp: async (_, { input: user }) => {
+      user.password = await hash(user.password, SALT_ROUNDS)
+      return await sequelize.models.User.create({ ...user })
+    }
   }
 }
