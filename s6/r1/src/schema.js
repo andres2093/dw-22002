@@ -8,7 +8,7 @@ export const typeDefs = gql`
   type Mutation {
     insertBook(asin:ID!,title:String, author:String, pages:Int): Book,
     updateBook(asin:ID!,title:String, author:String, pages:Int): Book,
-    signUp: (input: UserInput): User
+    signUp(input: UserInput): User
   }
   type Book {
     asin: ID,
