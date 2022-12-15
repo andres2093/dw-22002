@@ -33,3 +33,29 @@ mutation {
   }
 }
 ```
+
+### Crear usuario
+```
+mutation {
+  signUp(
+    input: {
+      name: "Beto"
+      lastname: "Bedu"
+      email: "beto@bedu.org"
+      password: "b3T0P4$$w0rD"
+      isAdmin: true
+    }
+  ) {
+    id
+    name
+    email
+  }
+}
+```
+
+### Iniciar sesión
+```
+mutation {
+  signIn(email: "beto@bedu.org", password:"b3T0P4$$w0rD")
+}
+```

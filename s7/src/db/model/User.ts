@@ -1,5 +1,16 @@
-export default (sequelize, DataTypes) => {
-  return sequelize.define('User', {
+import { Model, InferAttributes, InferCreationAttributes, DataTypes } from "sequelize"
+import { sequelize } from ".."
+
+export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>>{
+  declare id: number
+  declare name: string
+  declare lastname?: string
+  declare email: string
+  declare password: string
+  declare isAdmin: boolean
+}
+
+User.init({
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -27,5 +38,6 @@ export default (sequelize, DataTypes) => {
       defaultValue: false
     }
   }, {
-  });
-};
+    timestamps: true,
+    sequelize
+});
