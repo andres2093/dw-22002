@@ -22,7 +22,7 @@ export class UserController {
         isAdmin: user.isAdmin
       }
       logger.info(`signIn: Usuario ${user.id} accedio al sistema`)
-      return sign(tokenData, process.env.JWT_SECRET, { expiresIn: 180 })
+      return sign(tokenData, process.env.JWT_SECRET, { expiresIn: '8h' })
     } else {
       logger.error(`signIn: Credenciales inválidas para ${email}`)
       throw new AuthenticationError('Invalid credentials')
