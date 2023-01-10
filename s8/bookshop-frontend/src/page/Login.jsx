@@ -33,8 +33,8 @@ export const Login = () => {
       <div>
         <form onSubmit={ handleLogin }>
           <h3>Login</h3>
-          <input type="address" placeholder="Email"/>
-          <input type="password" placeholder="Password" />
+          <input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
           <button type="submit">Login</button>
         </form>
         { error && `Error: ${error.message}` }
